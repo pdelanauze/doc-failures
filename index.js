@@ -18,8 +18,7 @@ exports = module.exports = DocFailures;
 function DocFailures(runner) {
 
   var self = this
-      , stats = this.stats
-      , total = runner.total
+      , currentSuite = []
       , indents = 2;
 
   function indent() {
@@ -52,6 +51,7 @@ function DocFailures(runner) {
 
   runner.on('suite', function (suite) {
     if (suite.root) return;
+    currentSuite.push(suite);
     ++indents;
     console.log('%s<section class="suite">', indent());
     ++indents;
@@ -60,6 +60,7 @@ function DocFailures(runner) {
   });
 
   runner.on('suite end', function (suite) {
+    currentSuite.pop();
     if (suite.root) return;
     console.log('%s</dl>', indent());
     --indents;
@@ -68,7 +69,7 @@ function DocFailures(runner) {
   });
 
   runner.on('fail', function (test, err) {
-    console.log('%s  <dt class="error">%s</dt>', indent(), escape(test.title));
+    console.log('%s  <dt class="error">%s</dt>', indent(), escape(currentSuite.join(':') + ' ' + test.title));
     var code = escape(clean(test.fn.toString()));
     console.log('%s  <dd class="error"><pre><code>%s</code></pre></dd>', indent(), code);
     console.log('%s  <dd class="error">%s</dd>', indent(), escape(err));
