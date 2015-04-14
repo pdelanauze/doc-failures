@@ -16,7 +16,6 @@ exports = module.exports = DocFailures;
  */
 
 function DocFailures(runner) {
-  Base.call(this, runner);
 
   var self = this
       , stats = this.stats
