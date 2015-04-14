@@ -51,7 +51,7 @@ function DocFailures(runner) {
 
   runner.on('suite', function (suite) {
     if (suite.root) return;
-    currentSuite.push(suite);
+    currentSuite.push(suite.title);
     ++indents;
     console.log('%s<section class="suite">', indent());
     ++indents;
